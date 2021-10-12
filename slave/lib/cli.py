@@ -22,7 +22,7 @@ class CLI():
 
     def check_args(self):
         if len(argv) != self.argCount:
-            errMsg = invalid_args_errMsg(self.argVector)
+            errMsg = self.invalid_args_errMsg(self.argVector)
             stderr.write(errMsg)
             return 1
         else:

