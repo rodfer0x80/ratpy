@@ -5,10 +5,9 @@ from os import system
 
 class Connection():
 
-    def __init__(self, ip_addr, port, crypto):
+    def __init__(self, ip_addr, port):
         self.ip_addr = ip_addr
         self.port = port
-        self.crypto = crypto
         try:
             self.socketObj = socket(AF_INET, SOCK_STREAM)
         except socket_error:
