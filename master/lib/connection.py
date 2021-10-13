@@ -1,4 +1,4 @@
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from socket import error as socket_error
 from sys import stderr, exit
 from os import system
@@ -10,6 +10,7 @@ class Connection():
         self.port = port
         try:
             self.socketObj = socket(AF_INET, SOCK_STREAM)
+            self.socketObj.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         except socket_error:
             stderr.write("[x] Error creating socket object\n")
             exit(0)
@@ -21,11 +22,11 @@ class Connection():
             stderr.write("[x] Error binding socket object")
             exit(0)
 
-    def socket_listen(self):
+    def socket_listen(self, n=20):
         try:
-            system("clear")
+            #system("clear")
             print("[*] Listening on port %d" % self.port)
-            self.socketObj.listen(1)
+            self.socketObj.listen(n)
         except socket_error:
             stderr.write("[x] Error broadcasting server\n")
             exit(0)
@@ -33,7 +34,9 @@ class Connection():
     def socket_accept(self):
         try:
             self.conn, self.addr = self.socketObj.accept()
-            system("clear")
+            self.conn.setblocking(1) # no timeout
+
+            #system("clear")
             print("[+] Connection estabilished with %s:%d\n\n\n" % (self.addr[0], self.addr[1]))
         except socket_error:
             stderr.write("[x] Error connecting to slave\n")
@@ -43,4 +46,4 @@ class Connection():
         self.socket_bind()
         self.socket_listen()
         self.socket_accept()
-        return self.conn
+        return self.conn, self.addr
