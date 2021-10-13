@@ -1,4 +1,4 @@
-import threading
+from threading import Thread
 from queue import Queue
 from time import sleep
 from sys import exit
@@ -18,13 +18,15 @@ class Threadpool():
     # exit shell shout put connection back to cons list and go back to main menu
 
     def __init__(self):
+        self.ip_addr, self.port, self.shell_port = self.get_cli_args()
+
+        self.queue = Queue()
+
         self.threads = 2
         self.jobs = self.build_jobs()
+
         self.cons = []
         self.addrs = []
-        self.queue = Queue()
-        self.ip_addr, self.port, self.shell_port = self.get_cli_args()
-        
 
     def get_cli_args(self):
         cli = CLI()
@@ -44,7 +46,7 @@ class Threadpool():
 
     def create_threads(self):
         for _ in range(self.threads):
-            threadObj = threading.Thread(target=self.work)
+            threadObj = Thread(target=self.work)
             threadObj.daemon = True
             threadObj.start()
         self.queue.join()
@@ -52,25 +54,19 @@ class Threadpool():
     def work(self):
         while True:
             id = self.queue.get()
-            print(id)
             if id == 1:
                 connection = Connection(self.ip_addr, self.port)
                 conn, addr = connection.connect()
                 self.cons.append(conn)
                 self.addrs.append(addr)
-                print(self.addrs)
-                print(self.cons)
             elif id == 2:
                 while True:
                     sleep(0.2)
-                    print(self.addrs)
-                    print(len(self.addrs))
                     if len(self.addrs) > 0:
-                        print("addrs > 1")
                         menu = Menu(self.cons, self.addrs, self.ip_addr, self.port, self.shell_port)
                         menu.main_menu()
-                        #break
-            self.queue.task_done()
+                        break
+            #self.queue.task_done()
             self.queue.task_done()
             exit(0)
 

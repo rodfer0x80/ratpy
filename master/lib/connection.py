@@ -1,4 +1,4 @@
-from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
+from socket import socket, SOL_SOCKET, SO_REUSEADDR
 from socket import error as socket_error
 from sys import stderr, exit
 from os import system
@@ -8,8 +8,10 @@ class Connection():
     def __init__(self, ip_addr, port):
         self.ip_addr = ip_addr
         self.port = port
+
+    def create_socket(self):
         try:
-            self.socketObj = socket(AF_INET, SOCK_STREAM)
+            self.socketObj = socket()
             self.socketObj.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         except socket_error:
             stderr.write("[x] Error creating socket object\n")
@@ -17,33 +19,29 @@ class Connection():
 
     def socket_bind(self):
         try:
+            system("clear")
+            print("[*] Listening on port %d" % self.port)
             self.socketObj.bind((self.ip_addr, self.port))
+            self.socketObj.listen(20)
         except socket_error:
             stderr.write("[x] Error binding socket object")
-            exit(0)
-
-    def socket_listen(self, n=20):
-        try:
-            #system("clear")
-            print("[*] Listening on port %d" % self.port)
-            self.socketObj.listen(n)
-        except socket_error:
-            stderr.write("[x] Error broadcasting server\n")
-            exit(0)
+            #exit(0)
+            self.socket_bind()
 
     def socket_accept(self):
         try:
-            self.conn, self.addr = self.socketObj.accept()
-            self.conn.setblocking(1) # no timeout
+            conn, addr = self.socketObj.accept()
+            conn.setblocking(1) # no timeout
 
             #system("clear")
-            print("[+] Connection estabilished with %s:%d\n\n\n" % (self.addr[0], self.addr[1]))
+            print("[+] Connection estabilished with %s:%d\n\n\n" % (addr[0], addr[1]))
         except socket_error:
             stderr.write("[x] Error connecting to slave\n")
-            exit(0)
+            #exit(0)
+        return conn, addr
 
     def connect(self):
+        self.create_socket()
         self.socket_bind()
-        self.socket_listen()
-        self.socket_accept()
-        return self.conn, self.addr
+        conn, addr = self.socket_accept()
+        return conn, addr

