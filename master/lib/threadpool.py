@@ -59,6 +59,7 @@ class Threadpool():
                 conn, addr = connection.connect()
                 self.cons.append(conn)
                 self.addrs.append(addr)
+                self.queue.task_done()
             elif id == 2:
                 while True:
                     sleep(0.2)
@@ -66,7 +67,6 @@ class Threadpool():
                         menu = Menu(self.cons, self.addrs, self.ip_addr, self.port, self.shell_port)
                         menu.main_menu()
                         break
-            #self.queue.task_done()
             self.queue.task_done()
             exit(0)
 
