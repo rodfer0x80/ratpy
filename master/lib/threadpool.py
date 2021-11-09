@@ -33,46 +33,46 @@ class Threadpool():
         ip_addr, port, shell_port = cli.return_configs()
         return ip_addr, port, shell_port
         
-    # def build_jobs(self):
-    #     jobs = []
-    #     for i in range(1, self.threads+1):
-    #         jobs.append(i)
-    #     return jobs
+    def build_jobs(self):
+        jobs = []
+        for i in range(1, self.threads+1):
+            jobs.append(i)
+        return jobs
 
-    # def create_jobs(self):
-    #     for thread_id in self.jobs:
-    #         self.queue.put(thread_id)
-    #     self.queue.join()
+    def create_jobs(self):
+        for thread_id in self.jobs:
+            self.queue.put(thread_id)
+        self.queue.join()
 
-    # def create_threads(self):
-    #     for _ in range(self.threads):
-    #         threadObj = Thread(target=self.work)
-    #         threadObj.daemon = True
-    #         threadObj.start()
-    #     self.queue.join()
+    def create_threads(self):
+        for _ in range(self.threads):
+            threadObj = Thread(target=self.work)
+            threadObj.daemon = True
+            threadObj.start()
+        self.queue.join()
 
-    # def work(self):
-    #     while True:
-    #         id = self.queue.get()
-    #         if id == 1:
-    #             connection = Connection(self.ip_addr, self.port)
-    #             conn, addr = connection.connect()
-    #             self.cons.append(conn)
-    #             self.addrs.append(addr)
-    #             self.queue.task_done()
-    #         elif id == 2:
-    #             while True:
-    #                 sleep(0.2)
-    #                 if len(self.addrs) > 0:
-    #                     menu = Menu(self.cons, self.addrs, self.ip_addr, self.port, self.shell_port)
-    #                     menu.main_menu()
-    #                     break
-    #         self.queue.task_done()
-    #         exit(0)
+    def work(self):
+        while True:
+            id = self.queue.get()
+            if id == 1:
+                connection = Connection(self.ip_addr, self.port)
+                conn, addr = connection.connect()
+                self.cons.append(conn)
+                self.addrs.append(addr)
+            elif id == 2:
+                while True:
+                    sleep(0.2)
+                    if len(self.addrs) > 0:
+                        menu = Menu(self.cons, self.addrs, self.ip_addr, self.port, self.shell_port)
+                        menu.main_menu()
+                        break
+            self.queue.task_done()
+            self.queue.task_done()
+            #exit(0)
 
-    # def run_app(self):
-    #     self.create_threads()
-    #     self.create_jobs()
+    def run_app(self):
+        self.create_threads()
+        self.create_jobs()
         
 
 
