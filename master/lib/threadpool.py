@@ -66,9 +66,9 @@ class Threadpool():
                         menu = Menu(self.cons, self.addrs, self.ip_addr, self.port, self.shell_port)
                         menu.main_menu()
                         break
-            #self.queue.task_done()
             self.queue.task_done()
-            exit(0)
+            self.queue.task_done()
+            #exit(0)
 
     def run_app(self):
         self.create_threads()

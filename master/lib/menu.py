@@ -18,8 +18,9 @@ class Menu():
         print("==== Backdoor Main Menu ====")
         print("     ==================     ")
         print("l  --  list connections")
-        print("c  --  clear screen")
         print("x  --  execute backdoor")
+        print("c  --  clear screen")
+        print("h  --  display help menu")
         print("q  --  quit program")
         print("====                    ====")
 
@@ -31,10 +32,12 @@ class Menu():
 
     def list_connections(self):
             i = 0
+            print("\n\n")
             print("====  Connections  ====")
             for addr in self.addrs:
                 print("->  %d  --  %s  --  %d  " % (i, addr[0], addr[1]))
                 i += 1
+            print("====               ====")
 
     def execute_backdoor(self):
         self.list_connections()
@@ -67,11 +70,11 @@ class Menu():
         elif cmd == "x":
             self.execute_backdoor()
         else:
-            print("[x] Invalid command")
+            self.display_menu()
 
     def main_menu(self):
         #system("clear")
+        self.display_menu()
         while self.status != 0:
-            self.display_menu()
             cmd = self.wait_cmd()
             self.execute_cmd(cmd)
