@@ -1,2 +1,4 @@
 master/dump/
 slave/master_dl
+master/venv
+slave/venv
