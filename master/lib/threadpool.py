@@ -2,10 +2,13 @@ from threading import Thread
 from queue import Queue
 from time import sleep
 from sys import exit
+
+
 # lib
 from .menu import Menu
 from .cli import CLI
 from .connection import Connection
+
 
 class Threadpool():
     # create thead_pool and for each tread run connection to wait for connection

