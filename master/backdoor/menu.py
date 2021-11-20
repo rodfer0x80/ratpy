@@ -22,7 +22,7 @@ def display_menu():
 def wait_cmd():
     cmd = ""
     while cmd == "":
-        cmd = input(">>> ")
+        cmd = input("[rootkit_main_menu] >>> ")
     return cmd
 
 
