@@ -1,4 +1,4 @@
-# backdoor
+# unix_rootkit
 
 * [x] add cat and ls with path arg
 * [x] split into classes both master and client
