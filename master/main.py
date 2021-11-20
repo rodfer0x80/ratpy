@@ -1,8 +1,6 @@
-#!/bin/usr/python3
-
-from lib.args import *
-from lib.connection import *
-from lib.menu import *
+from backdoor.args import get_args
+from backdoor.connection import estabilish_connection
+from backdoor.menu import main_menu
 
 def main():
     cons = []
