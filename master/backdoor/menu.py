@@ -71,9 +71,10 @@ def execute_cmd(cons, addrs, cmd, shell_port):
     return status
 
 
-def main_menu(cons, addrs, ip_addr, port, shell_port):
-    status = 0
+def main_menu(cons, addrs, ip_addr, port, shell_port, status=0):
     display_menu()
+    cmd = wait_cmd()
+    status = execute_cmd(cons, addrs, cmd, shell_port)
     while status != 1:
         cmd = wait_cmd()
         status = execute_cmd(cons, addrs, cmd, shell_port)

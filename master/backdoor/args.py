@@ -6,11 +6,13 @@ def get_mod_args():
     argCount = len(argVector) + 1 # progname
     return argCount, argVector
 
+
 def get_configs():
     ip_addr = argv[1]
     port = int(argv[2])
     shell_port = int(argv[3])
     return ip_addr, port, shell_port
+
 
 def invalid_args_errMsg(argVector):
     args = ""
