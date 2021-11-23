@@ -3,6 +3,7 @@ from socket import error as socket_error
 from sys import stderr, exit
 from os import system
 
+
 def create_socket():
     try:
         socketObj = socket()

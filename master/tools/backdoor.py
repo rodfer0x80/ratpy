@@ -3,7 +3,7 @@ from os import system, listdir, fork, wait
 from socket import error as socket_error
 
 
-from .crypto import crypto_run
+from utils.crypto import crypto_run
 
 
 # hold strong shell on one connection

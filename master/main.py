@@ -1,5 +1,5 @@
 
-from backdoor.threadpool import *
+from threadpool.threadpool import threadpool_run
 
 
 def main():

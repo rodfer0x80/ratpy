@@ -6,10 +6,12 @@ def get_mod_args():
     argCount = len(argVector) + 1 # progname
     return argCount, argVector
 
+
 def get_configs():
     master_hostname = argv[1]
     master_port = int(argv[2])
     return master_hostname, master_port
+
 
 def invalid_args_errMsg(argVector):
     args = ""
@@ -27,6 +29,7 @@ def check_args(argCount, argVector):
         exit(0)
     else:
         return 0
+
 
 def get_args():
     argCount, argVector = get_mod_args()
