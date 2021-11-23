@@ -1,15 +1,9 @@
-from backdoor.args import get_args
-from backdoor.connection import estabilish_connection
-from backdoor.menu import main_menu
+
+from backdoor.threadpool import *
+
 
 def main():
-    cons = []
-    addrs = []
-    ip_addr, port, shell_port = get_args()
-    conn, addr = estabilish_connection(ip_addr, port)
-    cons.append(conn)
-    addrs.append(addr)
-    main_menu(cons, addrs, ip_addr, port, shell_port)
+    threadpool_run()
     return 0
     
 

