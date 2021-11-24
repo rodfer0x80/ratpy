@@ -10,4 +10,4 @@
 * [ ] encrypt shell connection over ssh
 * [ ] obfuscate backdoor interpreter and keylogger 
 * [ ] sniffer extension
-* v1.0
+* ...
