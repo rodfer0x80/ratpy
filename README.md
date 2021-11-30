@@ -11,4 +11,4 @@
 * [ ] obfuscate backdoor interpreter and keylogger 
 * [ ] sniffer extension
 * [ ] C rookit extension
-* ... should run on Linux and OSx (BSD later0
+* ... should run on Linux and OSx (BSD later)
