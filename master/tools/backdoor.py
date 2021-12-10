@@ -81,9 +81,6 @@ def builtin_cmds(conn, cmd, shell_port, status):
         filename = cmd[3:]
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
-    elif cmd[:6] == "keylog":
-        conn = send_cmd(conn, cmd[:6])
-        conn, msg = recv_msg(conn, 4096)
     else:
         msg = "[x] Command not found"
     return conn, status, msg

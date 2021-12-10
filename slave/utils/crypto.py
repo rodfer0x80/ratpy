@@ -3,7 +3,7 @@ from os import urandom
 from sys import stderr, exit
 
 
-# pip install cryptodome
+# locally import this so it can be written in the obfuscated script
 from Crypto.Cipher import AES
 
 

