@@ -4,9 +4,9 @@
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
 
+#### Master branch - includes tools
+
 ## Architecture
-### Master branch - includes tools
-#### ________
 ### Master
 * interface - server menu
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
