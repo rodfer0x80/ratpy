@@ -5,7 +5,8 @@
 </p>
 
 ## Architecture
-### Backbone branch
+### Backbone branch - simple backdoor without tools
+### ________
 ### Master
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
