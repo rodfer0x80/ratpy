@@ -1,5 +1,11 @@
 # ratpy
+
+<p align="left">
+<img src="imgs/ratpy.png" width="300" height="200">
+</p>
+
 ## Structure
+
 ### Master
 * interface - server menu
 * threadpool - running paralel code to serve menu while waiting and handling connections
@@ -7,11 +13,14 @@
 * utils - command line interface, encryption methods and connection methods
 > python3 __main__.py <server_ip_addr> <rat_port> <shell_port>
 ### _________________________________________________________________________
+
 ### Slave
 * tools - RAT client; linux C keylogger with daemonisation (must be rooted)
 * utils - command line interface, encryption methods and connection methods
 * obfuscator - obfuscator for client side RAT deployement
 > python3 __main__.py <server_ip_addr> <rat_port>
+### _________________________________________________________________________
+
 ## Development
 * [x] add cat and ls with path arg
 * [x] split into classes both master and client
