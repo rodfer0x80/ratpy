@@ -6,9 +6,8 @@
 * [x] threading pool stable for one connection
 * [x] linux keylogger extension
 * [x] multithread to accept multiple connections and hold 
+* [x] encrypt shell connection
 * [ ] rebirth slave every t seconds and recconect to master 
-* [ ] encrypt shell connection over ssh
 * [ ] obfuscate backdoor interpreter and keylogger 
 * [ ] sniffer extension
 * [ ] C rookit extension
-* ... should run on Linux and OSx (BSD later)
