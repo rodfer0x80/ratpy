@@ -4,7 +4,7 @@
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
 
-#### Master branch - includes tools
+#### master branch - includes tools
 
 ## Architecture
 ### Master
