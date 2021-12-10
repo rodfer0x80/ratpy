@@ -18,7 +18,7 @@
 ###### -----------------
 ### Structure
 
-###### -----------------
+##### 
 #### Master
 * interface - server menu
 * threadpool - running paralel code to serve menu while waiting and handling connections
@@ -26,7 +26,7 @@
 * utils - command line interface, encryption methods and connection methods
 > python3 __main__.py <server_ip_addr> <rat_port> <shell_port>
 
-###### -----------------
+##### 
 #### Slave
 * tools - RAT client; linux C keylogger with daemonisation (must be rooted)
 * utils - command line interface, encryption methods and connection methods
