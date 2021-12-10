@@ -8,7 +8,7 @@
 
 ### Master
 * interface - server menu
-* threadpool - running paralel code to serve menu while waiting and handling connections
+* threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
 * tools - backdoor :: encrypted reverse shell 30s RAT connection with respawn and client-side
 * utils - command line interface, encryption methods and connection methods
 > python3 __main__.py <server_ip_addr> <rat_port> <shell_port>
