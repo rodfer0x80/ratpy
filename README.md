@@ -4,7 +4,7 @@
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
 
-#### Backbone branch - simple backdoor without tools
+#### backbone branch - simple backdoor without tools
 
 ## Architecture
 ### Master
