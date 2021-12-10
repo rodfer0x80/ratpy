@@ -6,7 +6,7 @@
 * tools - backdoor :: encrypted reverse shell 30s RAT connection with respawn and client-side
 * utils - command line interface, encryption methods and connection methods
 > python3 __main__.py <server_ip_addr> <rat_port> <shell_port>
-### ______________________________________________________________________________
+### _________________________________________________________________________
 ### Slave
 * tools - RAT client; linux C keylogger with daemonisation (must be rooted)
 * utils - command line interface, encryption methods and connection methods
