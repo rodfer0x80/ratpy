@@ -6,7 +6,7 @@
 
 ## Architecture
 ### Master branch - includes tools
-#### --------
+#### ________
 ### Master
 * interface - server menu
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
