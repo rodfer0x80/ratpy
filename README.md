@@ -1,10 +1,10 @@
 # ratpy
 
 <p align="left">
-<img src="imgs/ratpy.png" width="300" height="200">
+<img src="imgs/ratpy.png" width="240" height="160">
 </p>
 
-## Structure
+## Architecture
 
 ### Master
 * interface - server menu
