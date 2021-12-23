@@ -5,7 +5,7 @@
 </p>
 
 #### master branch - includes tools
-
+#### Todo :: port to Golang (backbone without tools)
 ## Architecture
 ### Master
 * interface - server menu
