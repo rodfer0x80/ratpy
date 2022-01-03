@@ -13,8 +13,8 @@ Start server listening up to 20 connections with a simple menu interface in the 
 Before deploying and starting client change the port and server ip address for your server 
 Client will background by forking twice and killing parents and trying to obfuscate itself (can be improved for your choice of system)
 If client fails it will respawn forever which might crash the system after a while but wont start on reboot (can be added)
-On connection to server, client and server will perform a diffie-helman key exchange before initialising their communications
-Which are verified with a TCP like handshake under the encrypted channel or the exchange will be restarted
+Encryption is done with simple xor of bytearray of data with the key
+Which are verified with a TCP like handshake channel or the exchange will be restarted
 Once connection is estabilished we have a default set of commands, which can be expanded, to perform basic machine tasks and drop a shell
 ````
 

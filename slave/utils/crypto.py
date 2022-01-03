@@ -1,21 +1,10 @@
-from sys import stderr, exit
-from os import urandom
+key = bytearray(b'\x63\x72\x79\x70\x74\x6f\x70\x75\x6e\x6b\x73')
 
-from .aes import AES
+def xor(left_data, right_data):
+    return bytearray(l^r for l, r in zip(*map(bytearray, [left_data, right_data])))
 
+def encrypt(in_data, key):
+    return xor(in_data.encode("utf-8"), key)
 
-def crypto_run(crypt, text):
-    # key = b'F\xcc\x07\xac:?\xbc.\x12ZX\xec\xa8M>m'
-    # aes = AES(key)
-
-    # iv = urandom(16)
-    # if crypt == "encrypt":
-    #     crypt_text = aes.encrypt_cfb(text, iv)
-    # elif crypt == "decrypt":
-    #     crypt_text = aes.decrypt_cfb(text, iv)
-    # else:
-    #     stderr.write("\n[x] Unknown cryptographic operation")
-    #     exit(0)
-    crypt_text = text
-    return crypt_text 
-    
+def decrypt(in_data, key):
+    return xor(in_data, key).decode()
