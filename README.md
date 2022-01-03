@@ -1,7 +1,7 @@
 # ratpy
 ### another snake friendly rat - simple backdoor without tools
 <p align="left">
-<img src="imgs/ratpy.png" width="240" height="160">
+<img src="imgs/ratpy.png" width="320" height="160">
 </p>
 
 ### _________________________________________________________________________
