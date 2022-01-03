@@ -1,11 +1,10 @@
 # ratpy
 ### another snake friendly rat - simple backdoor without tools
-### _________________________________________________________________________
 <p align="left">
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
-### _________________________________________________________________________
 
+### _________________________________________________________________________
 ## Architecture
 ````
 This is a backbone build that can be extended for specific uses
@@ -23,7 +22,6 @@ The proggie has plenty of debug functions to help understand and debug it, the m
 provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
 tested and educational purposes
 ````
-### _________________________________________________________________________
 ````
 ### Master
 * interface - server menu and server cli scripting
@@ -32,7 +30,6 @@ tested and educational purposes
 * utils - encryption methods and connection methods
 > cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
 ````
-### _________________________________________________________________________
 ````
 ### Slave
 * interface - client cli scripting
@@ -41,7 +38,7 @@ tested and educational purposes
 > server :: python3 obfuscator.py && <copy ratpy.py to slave machine>
 > python3 ratpy.py <server_ip_addr> <rat_port>
 ````
-### _________________________________________________________________________
 
+### _________________________________________________________________________
 ## Adding extensions
 * this is just a backbone which can be expanded by adding more tools to the interface and tools dir
