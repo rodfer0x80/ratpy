@@ -36,7 +36,7 @@ Once connection is estabilished we have a default set of commands, which can be 
 
 ### _________________________________________________________________________
 ## Disclaimer
-* See license in LICENSE [GPL3.0]
 The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
 provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
 tested and educational purposes. This is just a backbone which can be expanded by adding more tools to the interface and tools dir.
+> See license in LICENSE [GPL3.0]
