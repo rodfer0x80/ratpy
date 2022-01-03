@@ -20,7 +20,7 @@ Once connection is estabilished we have a default set of commands, which can be 
 
 ````bash
 The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
-provide a prototype to build something similar in a different language, add some tools easily to experiement or get something quickly
+provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
 tested and educational purposes
 ````
 
