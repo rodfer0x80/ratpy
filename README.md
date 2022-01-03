@@ -5,7 +5,7 @@
 </p>
 
 ## Architecture
-````bash
+````
 This is a backbone build that can be extended for specific uses
 Start server listening up to 20 connections with a simple menu interface in the terminal
 Before deploying and starting client change the port and server ip address for your server 
@@ -16,7 +16,7 @@ Which are verified with a TCP like handshake channel or the exchange will be res
 Once connection is estabilished we have a default set of commands, which can be expanded, to perform basic machine tasks and drop a shell
 ````
 
-````bash
+````
 The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
 provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
 tested and educational purposes
