@@ -18,11 +18,6 @@ Once connection is estabilished we have a default set of commands, which can be 
 ````
 
 ````
-The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
-provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
-tested and educational purposes
-````
-````
 ### Master
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
@@ -40,5 +35,7 @@ tested and educational purposes
 ````
 
 ### _________________________________________________________________________
-## Adding extensions
-* this is just a backbone which can be expanded by adding more tools to the interface and tools dir
+## Disclaimer
+The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
+provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
+tested and educational purposes. This is just a backbone which can be expanded by adding more tools to the interface and tools dir.
