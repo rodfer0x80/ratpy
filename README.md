@@ -23,7 +23,7 @@ The proggie has plenty of debug functions to help understand and debug it, the m
 provide a prototype to build something more interesting in a different language, add some tools easily to experiement or get something quickly
 tested and educational purposes
 ````
-
+### _________________________________________________________________________
 ### Master
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
@@ -31,7 +31,6 @@ tested and educational purposes
 * utils - encryption methods and connection methods
 > cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
 ### _________________________________________________________________________
-
 ### Slave
 * interface - client cli scripting
 * tools - RAT client backdoor
