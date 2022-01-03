@@ -7,6 +7,23 @@
 #### backbone branch - simple backdoor without tools
 
 ## Architecture
+````bash
+This is a backbone build that can be extended for specific uses
+Start server listening up to 20 connections with a simple menu interface in the terminal
+Before deploying and starting client change the port and server ip address for your server 
+Client will background by forking twice and killing parents and trying to obfuscate itself (can be improved for your choice of system)
+If client fails it will respawn forever which might crash the system after a while but wont start on reboot (can be added)
+On connection to server, client and server will perform a diffie-helman key exchange before initialising their communications
+Which are verified with a TCP like handshake under the encrypted channel or the exchange will be restarted
+Once connection is estabilished we have a default set of commands, which can be expanded, to perform basic machine tasks and drop a shell
+````
+
+````bash
+The proggie has plenty of debug functions to help understand and debug it, the main utility of this project is
+provide a prototype to build something similar in a different language, add some tools easily to experiement or get something quickly
+tested and educational purposes
+````
+
 ### Master
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
@@ -19,17 +36,9 @@
 * interface - client cli scripting
 * tools - RAT client backdoor
 * utils - encryption methods and connection methods
-* obfuscator - obfuscator for client side RAT deployement
 > server :: python3 obfuscator.py && <copy ratpy.py to slave machine>
 > python3 ratpy.py <server_ip_addr> <rat_port>
 ### _________________________________________________________________________
 
 ## Adding extensions
-* to be written in a new future
-
-## Development to v1.0
-* [ ] clean up code, refactor and move args.py to interface
-* [ ] write client obfuscator
-* [ ] open master branch with binary tools for remote deployment
-* [ ] document adding extensions
-
+* this is just a backbone which can be expanded by adding more tools to the interface and tools dir
