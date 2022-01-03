@@ -46,7 +46,6 @@ def work():
                     main_menu(cons, addrs, ip_addr, port, shell_port, status=1)
                     break
         queue.task_done()
-        #queue.task_done()
         exit(0)
 
 

