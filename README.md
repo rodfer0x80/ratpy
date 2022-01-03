@@ -1,10 +1,8 @@
 # ratpy
-#### another snake friendly rat
+#### another snake friendly rat - simple backdoor without tools
 <p align="left">
 <img src="imgs/ratpy.png" width="240" height="160">
 </p>
-
-#### backbone branch - simple backdoor without tools
 
 ## Architecture
 ````bash
