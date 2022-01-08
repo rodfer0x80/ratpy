@@ -9,8 +9,6 @@ queue = Queue()
 addrs = []
 cons = []
 
-KEY = ""
-
 ip_addr = "0.0.0.0"
 port = 4444
 shell_port = 4666
