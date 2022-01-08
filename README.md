@@ -47,6 +47,7 @@ which can be expanded, to perform basic machine tasks and drop a shell
 ````
 :: Server side logger
 :: Client side OS enumeration
+:: Encryption tests
 ````
 
 ### _________________________________________________________________________
