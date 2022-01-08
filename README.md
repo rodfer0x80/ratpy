@@ -16,7 +16,6 @@ Encryption is done with simple xor of bytearray of data with the key
 Which are verified with a TCP like handshake channel or the exchange will be restarted
 Once connection is estabilished we have a default set of commands, which can be expanded, to perform basic machine tasks and drop a shell
 ### Todo
-* Change xor encryption to AES-256
 * Client compilation
 ````
 

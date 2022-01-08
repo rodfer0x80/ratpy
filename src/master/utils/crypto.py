@@ -1,10 +1,28 @@
-def xor(left_data, right_data):
-    return bytearray(l^r for l, r in zip(*map(bytearray, [left_data, right_data])))
-
-def encrypt(in_data):
+def decrypt(encrypted):
     global KEY
-    return xor(in_data.encode("utf-8"), KEY)
+    salt = encrypted[0:SALT_SIZE]
 
-def decrypt(in_data):
+    derived = pbkdf2_hmac('sha256', KEY, salt, 100000,
+                              dklen=IV_SIZE + KEY_SIZE)
+
+    iv = derived[0:IV_SIZE]
+    key = derived[IV_SIZE:]
+
+
+    msg = AES.new(key, AES.MODE_CFB, iv).decrypt(encrypted[SALT_SIZE:])
+
+    return msg
+
+def encrypt(msg):
     global KEY
-    return xor(in_data, KEY).decode()
+    salt = urandom(SALT_SIZE)
+
+    derived = pbkdf2_hmac('sha256', KEY, salt, 100000,
+                              dklen=IV_SIZE + KEY_SIZE)
+
+    iv = derived[0:IV_SIZE]
+    key = derived[IV_SIZE:]
+
+    encrypted = salt + AES.new(key, AES.MODE_CFB, iv).encrypt(msg)
+
+    return encrypted
