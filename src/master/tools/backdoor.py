@@ -5,7 +5,6 @@ from socket import error as socket_error
 
 from utils.crypto import encrypt, decrypt
 
-
 def get_cmd():
     cmd = ""
     while cmd == "":

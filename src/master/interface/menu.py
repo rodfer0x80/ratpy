@@ -23,7 +23,7 @@ def wait_cmd():
     # wait for a main menu command
     cmd = ""
     while cmd == "":
-        cmd = input("[rootkit_main_menu] >>> ")
+        cmd = input("[main_menu] >>> ")
     return cmd
 
 
