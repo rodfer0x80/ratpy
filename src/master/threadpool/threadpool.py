@@ -1,24 +1,14 @@
 import threading
-from queue import Queue
 from sys import exit
 from time import sleep
 
-from utils.args import get_args
 from utils.connection import estabilish_connection
 from interface.menu import main_menu
 
 
-n_threads = 2
-jobs = [1, 2]
-queue = Queue()
-
-addrs = []
-cons = []
-
-ip_addr, port, shell_port = get_args()
-
 
 def create_threads():
+    global n_threads, queue
     for _ in range(n_threads):
         objThread = threading.Thread(target=work)
         objThread.daemon = True
@@ -27,12 +17,14 @@ def create_threads():
 
 
 def create_jobs():
+    global jobs, queue
     for thread_id in jobs:
         queue.put(thread_id)
     queue.join()
 
 
 def work():
+    global queue, conns, addrs, ip_addr, port, shell_port
     while True:
         val = queue.get()
         if val == 1:
