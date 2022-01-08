@@ -15,20 +15,25 @@ If client fails it will respawn forever which might crash the system after a whi
 Encryption is done with simple xor of bytearray of data with the key
 Which are verified with a TCP like handshake channel or the exchange will be restarted
 Once connection is estabilished we have a default set of commands, which can be expanded, to perform basic machine tasks and drop a shell
-### Todo
-* Client compilation
 ````
+### Todo
 
 ````
+:: Server side logger
+:: Client side OS enumeration
+````
+
 ### Master
+````
 * interface - server menu and server cli scripting
 * threadpool - running paralel code to serve menu while waiting and handling connections set to up to 20 by default
 * tools - backdoor :: encrypted reverse shell 30s RAT connection with respawn and client-side
 * utils - encryption methods and connection methods
 > cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
 ````
-````
+
 ### Slave
+````
 * interface - client cli scripting
 * tools - RAT client backdoor
 * utils - encryption methods and connection methods
