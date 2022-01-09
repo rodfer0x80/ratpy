@@ -1,6 +1,6 @@
 # ratpy
 <p align="left">
-<img src="imgs/ratpy.png" width="120" height="160">
+<img src="imgs/ratpy.png" width="160" height="160">
 </p>
 
 > another snake friendly rat backbone
