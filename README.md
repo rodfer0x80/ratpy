@@ -1,11 +1,13 @@
 # ratpy
+
+> another snake friendly rat backbone
+
 <p align="left">
 <img src="imgs/ratpy.png" width="160" height="160">
 </p>
 
-> another snake friendly rat backbone
-
 ### _________________________________________________________________________
+
 ## Architecture
 ````
 This is a backbone build with scripts and space for tools
