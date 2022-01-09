@@ -7,20 +7,14 @@
 ### _________________________________________________________________________
 ## Architecture
 ````
-This is a backbone build that can be extended for specific uses
-Start server listening up to 20 connections
-with a simple menu interface in the terminal
-Before deploying and starting client
-change the port and server ip address for your server 
-Client will background by forking twice
-and killing parents and trying to obfuscate itself 
-If client fails it will respawn forever
-which might crash the system after a while but wont start on reboots
-Encryption is done with simple xor of bytearray of data with the key
-Which are verified with a TCP like handshake channel
-or the exchange will be restarted
-Once connection is estabilished we have a default set of commands,
-which can be expanded, to perform basic machine tasks and drop a shell
+This is a backbone build with scripts and space for tools
+Before deploying and starting client change the port and server ip address for your server 
+Start server listening up to 20 connections with a simple menu interface in the terminal
+Client will background by forking twice and killing parents and trying to obfuscate itself 
+If client fails it will respawn forever which might crash the system after a while but wont start on reboots
+Encryption is done using AES256 from the pycryptodome library
+Communications is done via socket connection of byte array type
+Once connection is estabilished we have a default set of commands, for basic IO control and dropping a shell
 ````
 
 ### Master
@@ -31,7 +25,6 @@ which can be expanded, to perform basic machine tasks and drop a shell
 * tools - backdoor :: encrypted reverse shell
   30s RAT connection with respawn and client-side
 * utils - encryption methods and connection methods
-> cd master && python3 main.py <server_ip_addr> <rat_port> <shell_port>
 ````
 
 ### Slave
@@ -40,7 +33,6 @@ which can be expanded, to perform basic machine tasks and drop a shell
 * tools - RAT client backdoor
 * utils - encryption methods and connection methods
 > server :: python3 obfuscator.py && <copy ratpy.py to slave machine>
-> python3 ratpy.py <server_ip_addr> <rat_port>
 ````
 
 ### Todo
@@ -51,12 +43,5 @@ which can be expanded, to perform basic machine tasks and drop a shell
 
 ### _________________________________________________________________________
 ## Disclaimer
-````
-The proggie has plenty of debug functions to help understand and debug it,
-the main utility of this project is
-provide a prototype to build something more interesting in a different language,
-add some tools easily to experiement or get something quickly
-tested and educational purposes. This is just a backbone which can be expanded
-by adding more tools to the interface and tools dir.
-````
+* This project provides a prototype to build on top of and educational purposes.
 > See license in LICENSE :: GPL3.0 [https://raw.githubusercontent.com/trevalkov/ratpy/master/LICENSE]
