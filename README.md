@@ -37,11 +37,16 @@ Once connection is estabilished we have a default set of commands, for basic IO 
 
 ### Todo
 ````
-:: Server side logger
-:: Client side OS enumeration
+[x] Swap xor for AES256 encryption
+[x] Client compilation
+[x] Encryption tests
+[ ] Server logger
+[ ] Client OS enumeration
 ````
 
 ### _________________________________________________________________________
 ## Disclaimer
-* This project provides a prototype to build on top of and educational purposes.
-> See license in LICENSE :: GPL3.0 [https://raw.githubusercontent.com/trevalkov/ratpy/master/LICENSE]
+````
+This project provides a prototype to build on top of and educational purposes.
+See license in LICENSE :: GPL3.0 [https://raw.githubusercontent.com/trevalkov/ratpy/master/LICENSE]
+````
