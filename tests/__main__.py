@@ -43,6 +43,8 @@ if __name__ == '__main__':
     msg2 = "testtesttesttesttesttesttesttest"
     cipher1 = crypto_encrypt(msg1.encode("utf-8"))
     cipher2 = crypto_encrypt(msg2.encode("utf-8"))
+    if msg1.encode("utf-8") == cipher1 or msg2.encode("utf-8") == cipher2:
+        print("[x] encryption error")
     if msg1 != crypto_decrypt(cipher1).decode("utf-8") or msg2 != crypto_decrypt(cipher2).decode("utf-8"):
         print("[x] encryption/decryption scheme not returning expected results")
     else:
