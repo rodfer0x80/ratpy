@@ -1,3 +1,7 @@
+from hashlib import pbkdf2_hmac
+from Crypto.Cipher import AES
+
+
 def decrypt(encrypted):
     global KEY
     salt = encrypted[0:SALT_SIZE]

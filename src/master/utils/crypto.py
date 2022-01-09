@@ -1,5 +1,10 @@
+from hashlib import pbkdf2_hmac
+from Crypto.Cipher import AES
+from os import urandom
+
+
 def decrypt(encrypted):
-    global KEY
+    global KEY, IV_SIZE, SALT_SIZE, KEY_SIZE
     salt = encrypted[0:SALT_SIZE]
 
     derived = pbkdf2_hmac('sha256', KEY, salt, 100000,
@@ -12,6 +17,7 @@ def decrypt(encrypted):
     msg = AES.new(key, AES.MODE_CFB, iv).decrypt(encrypted[SALT_SIZE:])
 
     return msg
+
 
 def encrypt(msg):
     global KEY

