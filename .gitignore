@@ -1,4 +1,5 @@
 master/dump/
+venv/
 slave/master_dl
 __pycache__/
 *pyc
