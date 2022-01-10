@@ -1,7 +1,7 @@
 from sys import exit
 from socket import socket, AF_INET, SOCK_STREAM
 from socket import error as socket_error
-from os import dup2, fork, listdir, getcwd, system
+from os import dup2, fork, listdir, getcwd
 from subprocess import run, Popen, DEVNULL
 from time import sleep
 

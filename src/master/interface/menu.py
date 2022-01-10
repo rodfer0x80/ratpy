@@ -1,9 +1,9 @@
 from time import sleep
-from os import system
 from sys import stderr, exit
-
+from subprocess import call
 
 from tools.backdoor import backdoor_run
+from utils.utils import clear
 
 
 def display_menu():
@@ -44,17 +44,17 @@ def execute_backdoor(cons, addrs, shell_port):
         cmd = wait_cmd()
         cmd = int(cmd)
     except:
-        system("clear")
+        clear()
         # retry
         execute_backdoor(cons, addrs, shell_port)
     try:
         conn = cons[cmd]
     except:
-        system("clear")
+        clear()
         # retry
         stderr.write("[x] Index out of bounds\n\n")
         execute_backdoor(cons, addrs, shell_port)
-    system("clear")
+    clear()
     # open netcat listener and wait for connection
     backdoor_run(conn, shell_port)
 
@@ -65,11 +65,11 @@ def execute_cmd(cons, addrs, cmd, shell_port, status):
         status = 1
     elif cmd == "l":
         # clear screen and list connections
-        system("clear")
+        clear()
         list_connections(addrs)
     elif cmd == "c":
         # clear screen
-        system("clear")
+        clear()
     elif cmd == "x":
         # start backdoor 
         execute_backdoor(cons, addrs, shell_port)
