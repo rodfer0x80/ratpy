@@ -2,6 +2,7 @@ import threading
 from sys import exit
 from time import sleep
 from queue import Queue
+import getpass
 
 from utils.connection import estabilish_connection
 from interface.menu import main_menu
@@ -51,7 +52,6 @@ def work():
         exit(0)
 
 
-import getpass
 def setup():
     global KEY, ip_addr, port, shell_port
     key = getpass.getpass("Encryption password: ")
