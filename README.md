@@ -1,6 +1,7 @@
 # ratpy
 
 <p> another snake friendly rat backbone </p>
+> recent update: this code needs refactoring to get cleaner and finishing enumeration, logging and interface 
 
 <p align="left">
 <img src="imgs/ratpy.png" width="160" height="160">
